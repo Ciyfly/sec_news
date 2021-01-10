@@ -2,8 +2,8 @@
 # coding=utf-8
 '''
 Date: 2021-01-07 11:34:05
-LastEditors: recar
-LastEditTime: 2021-01-07 11:39:43
+LastEditors: Recar
+LastEditTime: 2021-01-10 14:25:11
 '''
 #!/usr/bin/python
 # coding=UTF-8
@@ -13,8 +13,6 @@ import configparser
 import logging
 import os
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 
 def get_logger(console=True, log_file=None, level=logging.INFO, maxBytes=200*1024, backupCount=5, log_name='root'): # noqa E501
@@ -40,5 +38,8 @@ def get_logger(console=True, log_file=None, level=logging.INFO, maxBytes=200*102
 
 
 base_path = os.path.dirname(os.path.abspath(__file__))
-log_file_path = os.path.join(base_path, "log", "spider_sec.log")
-logger = get_logger(level=level, log_file=log_file_path, log_name="spider_sec")
+log_dir = os.path.join(base_path, "log")
+if not os.path.exists(log_dir):
+    os.mkdir(log_dir)
+log_file_path = os.path.join(log_dir, "spider_sec.log")
+logger = get_logger(log_file=log_file_path, log_name="spider_sec")

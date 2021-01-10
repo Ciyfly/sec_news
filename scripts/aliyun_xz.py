@@ -1,33 +1,37 @@
 #!/usr/bin/python
 # coding=utf-8
 '''
-Date: 2021-01-07 11:36:26
+Author: Recar
+Date: 2021-01-10 15:34:13
 LastEditors: Recar
-LastEditTime: 2021-01-10 15:43:21
+LastEditTime: 2021-01-10 16:36:32
 '''
+
 from .models import News
 from scripts.base import Base
+from lxml import etree
 import traceback
+import requests
 
 
 class Spider(Base):
     def __init__(self, resv):
         super(Spider, self).__init__(resv)
-        self.script_name = "gitlab_advisories"
-        self.source = "https://github.com/advisories"
-        self.url = "https://github.com/advisories"
+        self.script_name = "aliyun_xz"
+        self.source = "https://xz.aliyun.com/"
+        self.url = "https://xz.aliyun.com/"
         self.get_last_info()
-        self.get_url_frist_title('//*[@id="js-pjax-container"]/div/div[2]/div[2]/div/div[2]/div/a/text()')
+        self.get_url_frist_title('//*[@id="includeList"]/table/tr[1]/td/p[1]/a/text()')
 
     def update_new(self):
         add_news = list()
         try:
-            html = requests.get(self.url).content
+            html = requests.get(self.url, headers=self.headers).content
             r=etree.HTML(html)
-            title_base = '//*[@id="js-pjax-container"]/div/div[2]/div[{0}]/div/div[2]/div/a/text()'
-            href_base = '//*[@id="js-pjax-container"]/div/div[2]/div[{0}]/div/div[2]/div/a/@href'
-            synopsis_base = '//*[@id="js-pjax-container"]/div/div[2]/div[{0}]/div/div[2]/div/div/span[1]/text()'
-            for i in range(2, 27):
+            title_base = '//*[@id="includeList"]/table/tr[{0}]/td/p[1]/a/text()'
+            href_base = '//*[@id="includeList"]/table/tr[{0}]/td/p[1]/a/@href'
+            synopsis_base = '//*[@id="includeList"]/table/tr[{0}]/td/p[2]/a[2]/text()'
+            for i in range(1, 31):
                 title=r.xpath(title_base.format(i))[0] if r.xpath(title_base.format(i)) else None
                 href=r.xpath(href_base.format(i))[0] if r.xpath(href_base.format(i)) else None
                 synopsis=r.xpath(synopsis_base.format(i))[0] if r.xpath(synopsis_base.format(i)) else None
@@ -35,7 +39,7 @@ class Spider(Base):
                     title = title.replace("\n", "").replace("\t", "").strip()
                 if href:
                     href = href.replace("\n", "").replace("\t", "").strip()
-                    href = "https://github.com{0}".format(href)
+                    href = "https://xz.aliyun.com/{0}".format(href)
                 if synopsis:
                     synopsis = synopsis.replace("\n", "").replace("\t", "").strip()
                 self.logger.debug("{0} find: {1}".format(self.script_name, title))

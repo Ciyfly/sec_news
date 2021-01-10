@@ -2,16 +2,17 @@
 # coding=utf-8
 '''
 Date: 2021-01-07 11:33:40
-LastEditors: recar
-LastEditTime: 2021-01-07 12:11:45
+LastEditors: Recar
+LastEditTime: 2021-01-10 15:00:15
 '''
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from scripts.models import Base_model
 from log import logger
 import configparser
 import importlib
 import traceback
 import schedule
-import pymongo
 import json
 import time
 import sys
@@ -71,14 +72,13 @@ class Resvars():
         db_port = env_db_port if env_db_port else self.conf.get('db', "port") # noqa E501
         db_username = env_db_username if env_db_username else self.conf.get('db', "username") # noqa E501
         db_password = env_db_password if env_db_password else self.conf.get('db', "password") # noqa E501
-        # mongo连接
-        engine = create_engine("mysql://user:password@hostname/dbname?charset=utf8")
-        myclient = pymongo.MongoClient(
-            "mongodb://{0}:{1}@{2}:{3}/".format(
-                mongo_username, mongo_password, mongo_host, mongo_port
-                )
-            )
-        self.news_info = myclient["sec_news"]["news_info"]
+        # db连接
+        # self.engine = create_engine("mysql://{0}:{1}@{2}/{3}?charset=uft8".format(
+        #     db_username, db_password,
+        #     db_host, db_port, "news"
+        #     ))
+        self.engine = create_engine('sqlite:///news.db')
+        self.DBSession = sessionmaker(bind=self.engine)()
 
 
 def run():
