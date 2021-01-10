@@ -3,7 +3,7 @@
 '''
 Date: 2021-01-07 11:33:40
 LastEditors: Recar
-LastEditTime: 2021-01-10 15:00:15
+LastEditTime: 2021-01-10 23:00:29
 '''
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -33,9 +33,9 @@ class SpiderSec():
             for filename in files:
                 name = os.path.splitext(filename)[0]
                 suffix = os.path.splitext(filename)[1]
-                if suffix == '.py' and name!="base":
+                if suffix == '.py' and name!="base" and !="models":
                     self.script_list.append(name)
-                    
+
     def run(self):
         """
         加载脚本
