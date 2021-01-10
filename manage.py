@@ -4,13 +4,14 @@
 Author: Recar
 Date: 2021-01-10 14:07:38
 LastEditors: Recar
-LastEditTime: 2021-01-10 16:56:56
+LastEditTime: 2021-01-10 22:35:50
 '''
 from main import Resvars
 from scripts.models import Base_model
 from scripts.models import News
 from scripts.gitlab_advisories import Spider as gitlab_advisorie_spider
 from scripts.aliyun_xz import Spider as aliyun_xz_spider
+from scripts.freebuf import Spider as freebuf_spider
 from log import logger
 from lxml import etree
 import traceback
@@ -33,6 +34,8 @@ class Manager(Resvars):
     def get_first_aliyun_xz(self):
         aliyun_xz_spider(self).update_new(test=True)
 
+    def get_first_freebuf(self):
+        freebuf_spider(self).update_new(test=True)
 
 
 manager = Manager()
@@ -65,11 +68,18 @@ def test_aliyun_xz():
     manager.get_first_aliyun_xz()
     click.echo('test_aliyun_xz')
 
+@click.command()
+def test_freebuf():
+    manager.get_first_freebuf()
+    click.echo('test_freebuf')
+
+
 cli.add_command(initdb)
 cli.add_command(dropdb)
 cli.add_command(test)
 cli.add_command(test_gitlab_advisories)
 cli.add_command(test_aliyun_xz)
+cli.add_command(test_freebuf)
 
 if __name__ == "__main__":
     cli()
