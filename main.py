@@ -3,7 +3,7 @@
 '''
 Date: 2021-01-07 11:33:40
 LastEditors: Recar
-LastEditTime: 2021-01-12 23:46:17
+LastEditTime: 2021-01-13 00:04:20
 '''
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -20,6 +20,7 @@ import os
 
 class SpiderSec():
     def __init__(self, resv):
+        self.resv = resv
         self.base_path = os.path.dirname(os.path.abspath(__file__))
         self.script_path = os.path.join(self.base_path, "scripts")
         sys.path.append(self.script_path)
@@ -42,8 +43,9 @@ class SpiderSec():
         """
         try:
             for script_name in self.script_list:
+                self.logger.info("run {0}".format(script_name))
                 metaclass = importlib.import_module(script_name)
-                metaclass.Spider(resv).run() # noqa E501
+                metaclass.Spider(self.resv).run() # noqa E501
         except Exception:
             self.logger.error(traceback.format_exc())
 

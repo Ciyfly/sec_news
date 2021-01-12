@@ -3,9 +3,9 @@
 '''
 Date: 2021-01-07 11:36:26
 LastEditors: Recar
-LastEditTime: 2021-01-12 23:59:14
+LastEditTime: 2021-01-13 00:04:39
 '''
-from .models import News
+from scripts.models import News
 from scripts.base import Base
 from lxml import etree
 import traceback

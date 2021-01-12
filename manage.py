@@ -4,9 +4,9 @@
 Author: Recar
 Date: 2021-01-10 14:07:38
 LastEditors: Recar
-LastEditTime: 2021-01-10 22:35:50
+LastEditTime: 2021-01-13 00:03:21
 '''
-from main import Resvars
+from main import Resvars, SpiderSec
 from scripts.models import Base_model
 from scripts.models import News
 from scripts.gitlab_advisories import Spider as gitlab_advisorie_spider
@@ -73,6 +73,10 @@ def test_freebuf():
     manager.get_first_freebuf()
     click.echo('test_freebuf')
 
+@click.command()
+def test_run():
+    SpiderSec(manager).run()
+    click.echo('test_run')
 
 cli.add_command(initdb)
 cli.add_command(dropdb)
@@ -80,6 +84,7 @@ cli.add_command(test)
 cli.add_command(test_gitlab_advisories)
 cli.add_command(test_aliyun_xz)
 cli.add_command(test_freebuf)
+cli.add_command(test_run)
 
 if __name__ == "__main__":
     cli()

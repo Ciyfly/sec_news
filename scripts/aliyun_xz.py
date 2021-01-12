@@ -4,10 +4,10 @@
 Author: Recar
 Date: 2021-01-10 15:34:13
 LastEditors: Recar
-LastEditTime: 2021-01-12 23:58:57
+LastEditTime: 2021-01-13 00:03:54
 '''
 
-from .models import News
+from scripts.models import News
 from scripts.base import Base
 from lxml import etree
 import traceback

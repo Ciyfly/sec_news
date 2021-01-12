@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-09 23:09:34
 LastEditors: Recar
-LastEditTime: 2021-01-10 22:55:41
+LastEditTime: 2021-01-13 00:06:33
 '''
 
 from .models import News
@@ -37,6 +37,8 @@ class Base():
             self.url_frist_title =  url_frist_title[0].replace("\n", "").replace("\t", "").strip()
 
     def need_update(self):
+        if not self.last_news:
+            return True
         last_title = self.last_news.title
         self.logger.debug("last_title: {0}".format(last_title))
         self.logger.debug("url_frist_title: {0}".format(self.url_frist_title))

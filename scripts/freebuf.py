@@ -4,10 +4,10 @@
 Author: Recar
 Date: 2021-01-10 16:40:29
 LastEditors: Recar
-LastEditTime: 2021-01-12 23:59:04
+LastEditTime: 2021-01-13 00:06:45
 '''
 # https://www.freebuf.com/
-from .models import News
+from scripts.models import News
 from scripts.base import Base
 from lxml import etree
 import traceback
