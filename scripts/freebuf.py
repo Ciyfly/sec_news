@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-10 16:40:29
 LastEditors: Recar
-LastEditTime: 2021-01-10 22:51:42
+LastEditTime: 2021-01-12 23:59:04
 '''
 # https://www.freebuf.com/
 from .models import News
@@ -18,7 +18,7 @@ class Spider(Base):
     def __init__(self, resv):
         super(Spider, self).__init__(resv)
         self.script_name = "freebuf"
-        self.source = "https://www.freebuf.com/"
+        self.source = "freebuf"
         self.url = "https://www.freebuf.com/fapi/frontend/home/article?page=1&limit=20&type=1&day=&category=%E7%B2%BE%E9%80%89"
         self.base_url = "https://www.freebuf.com"
         self.get_last_info()

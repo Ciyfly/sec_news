@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-10 15:34:13
 LastEditors: Recar
-LastEditTime: 2021-01-10 19:50:50
+LastEditTime: 2021-01-12 23:58:57
 '''
 
 from .models import News
@@ -18,7 +18,7 @@ class Spider(Base):
     def __init__(self, resv):
         super(Spider, self).__init__(resv)
         self.script_name = "aliyun_xz"
-        self.source = "https://xz.aliyun.com/"
+        self.source = "阿里先知"
         self.url = "https://xz.aliyun.com/"
         self.base_url = "https://xz.aliyun.com/"
         self.get_last_info()
