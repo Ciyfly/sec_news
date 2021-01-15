@@ -4,15 +4,16 @@
  * @Author: Recar
  * @Date: 2021-01-10 23:05:39
  * @LastEditors: Recar
- * @LastEditTime: 2021-01-13 00:32:25
+ * @LastEditTime: 2021-01-14 23:48:02
 -->
 
 
 <html>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cikonss.css') }}" />
     <style>
         .hollow-compose-three-circles {
             width: 500px;
-            height: 115px;
+            height: 100px;
             position: relative;
             background: radial-gradient(circle at right top, transparent 10px, #00adb5 0) top left / 60px 51% no-repeat,
                 radial-gradient(circle at right bottom, transparent 10px, #00adb5 0) bottom left /60px 51% no-repeat,
@@ -44,6 +45,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .article-container-title {
+            display: -webkit-box;
+            word-break: break-all;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         a{
             text-decoration:none;
         }
@@ -61,17 +70,44 @@
             overflow:hidden;          /* 内容超出宽度时隐藏超出部分的内容 */
             text-overflow:ellipsis;   /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
         }
+        .body-div{
+            text-align:center;
+            /* background-color: red; */
+            width: 50%;
+            margin-left: 25%;
+            font-size: 12px;
+        }
+        ul.pagination {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            margin-left: 25%;
+        }
+
+        ul.pagination li {display: inline;}
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
     </style>
     <body>
+        <div class="body-div">
         {% for new in datas %}
         <div class="warpper" data-v-15baa41c="">
             <div class="hollow-compose-three-circles" data-v-15baa41c="">
-                <a href="{{new.href}}">
-                <span class="new article-container">{{new.title}}</span>
-                <span class="new article-container">{{new.synopsis}}</span>
-                <span class="new article-container">{{new.update_time.strftime('%Y %m %d %H:%M:%S')}}&nbsp;&nbsp;{{new.source}}</span>
+                <a href="{{new.href}}" target="_blank">
+                <span class="new article-container-title" face="微软雅黑">{{new.title}}</span>
+                <span class="new article-container .icon-tag">{{new.synopsis}}</span>
+                <span class="new article-container" color:#FF0000>{{new.update_time.strftime('%Y-%m-%d %H:%M:%S')}}&nbsp;&nbsp;[{{new.source}}]</span>
             </a></div>
         </div>
         {% endfor %}
+    </div>
+
+    {%import '_macros.html' as pg%}
+    {{pg.my_paginate(pagination,'index')}}
     </body>
 </html>
