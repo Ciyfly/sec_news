@@ -3,7 +3,7 @@
 '''
 Date: 2021-01-07 11:36:26
 LastEditors: Recar
-LastEditTime: 2021-01-13 00:04:39
+LastEditTime: 2021-01-16 10:58:35
 '''
 from scripts.models import News
 from scripts.base import Base
@@ -17,6 +17,7 @@ class Spider(Base):
         super(Spider, self).__init__(resv)
         self.script_name = "gitlab_advisories"
         self.source = "gitlab advisories"
+        self.source_url = "https://github.com/advisories"
         self.url = "https://github.com/advisories"
         self.base_url = "https://github.com/"
         self.get_last_info()
