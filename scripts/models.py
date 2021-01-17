@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-09 22:58:52
 LastEditors: Recar
-LastEditTime: 2021-01-16 11:02:14
+LastEditTime: 2021-01-17 23:40:02
 '''
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column
@@ -26,7 +26,7 @@ class News(Base_model):
      href = Column(String(255))
      script_name = Column(String(255))
      synopsis = Column(String(255))
-
+     new_type =  Column(Integer, default=0)
     # def __repr__(self):
     #     return str({
     #         "id":self.id,

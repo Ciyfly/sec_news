@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-10 15:34:13
 LastEditors: Recar
-LastEditTime: 2021-01-16 10:58:10
+LastEditTime: 2021-01-17 23:40:22
 '''
 
 from scripts.models import News
@@ -27,6 +27,7 @@ class Spider(Base):
         self.title_xpath = '//*[@id="includeList"]/table/tr[{0}]/td/p[1]/a/text()'
         self.href_xpath = '//*[@id="includeList"]/table/tr[{0}]/td/p[1]/a/@href'
         self.synopsis_xpath = '//*[@id="includeList"]/table/tr[{0}]/td/p[2]/a[2]/text()'
+        self.new_type = 0
 
     def update_new(self, test=False):
         max_size = 31

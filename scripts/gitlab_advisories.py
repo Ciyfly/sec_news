@@ -3,7 +3,7 @@
 '''
 Date: 2021-01-07 11:36:26
 LastEditors: Recar
-LastEditTime: 2021-01-16 10:58:35
+LastEditTime: 2021-01-17 23:40:30
 '''
 from scripts.models import News
 from scripts.base import Base
@@ -25,6 +25,7 @@ class Spider(Base):
         self.title_xpath = '//*[@id="js-pjax-container"]/div/div[2]/div[{0}]/div/div[2]/div/a/text()'
         self.href_xpath = '//*[@id="js-pjax-container"]/div/div[2]/div[{0}]/div/div[2]/div/a/@href'
         self.synopsis_xpath = '//*[@id="js-pjax-container"]/div/div[2]/div[{0}]/div/div[2]/div/div/span[1]/text()'
+        self.new_type = 1
 
     def update_new(self, test=False):
         max_size = 27

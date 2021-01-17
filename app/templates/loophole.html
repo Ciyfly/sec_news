@@ -4,7 +4,7 @@
  * @Author: Recar
  * @Date: 2021-01-10 23:05:39
  * @LastEditors: Recar
- * @LastEditTime: 2021-01-18 00:08:49
+ * @LastEditTime: 2021-01-18 00:09:03
 -->
 
 
@@ -14,12 +14,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
     <body>
         <p>标签式的导航菜单</p>
         <ul class="nav nav-tabs">
-            <li class="active"><a href="/" >安全文章</a></li>
-            <li><a href="/loophole">漏洞预警</a></li>
+            <li ><a href="/" >安全文章</a></li>
+            <li class="active"><a href="/loophole">漏洞预警</a></li>
             <li><a href="/subdomain">子域名监控</a></li>
         </ul>
         <div class="body-div">
@@ -37,7 +36,7 @@
         {% endfor %}
     </div>
 
-    {%import '_macros.html' as pg_list%}
-    {{pg_list.my_paginate(pagination,'index')}}
+    {%import '_macros.html' as pg_loophole%}
+    {{pg_loophole.my_paginate(pagination,'loophole')}}
     </body>
 </html>

@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-10 23:05:09
 LastEditors: Recar
-LastEditTime: 2021-01-16 10:57:06
+LastEditTime: 2021-01-17 23:39:42
 '''
 from app import db
 from datetime import datetime
@@ -19,3 +19,4 @@ class News(db.Model):
      href = db.Column(db.String(255))
      script_name = db.Column(db.String(255))
      synopsis = db.Column(db.String(255))
+     new_type =  db.Column(db.Integer, default=0)

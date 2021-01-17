@@ -1,0 +1,91 @@
+.hollow-compose-three-circles {
+    width: 500px;
+    height: 120px;
+    position: relative;
+    background: radial-gradient(circle at right top, transparent 10px, #00adb5 0) top left / 60px 51% no-repeat,
+        radial-gradient(circle at right bottom, transparent 10px, #00adb5 0) bottom left /60px 51% no-repeat,
+        radial-gradient(circle at left top, transparent 10px, #eeeeee 0) 60px 0/430px 51% no-repeat,
+        radial-gradient(circle at left bottom, transparent 10px, #eeeeee 0) 60px 50px /430px 51% no-repeat,
+        radial-gradient(circle at 10px 50px, transparent 10px, #eeeeee 0) 490px 0/10px 100px no-repeat;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,.2));
+    }
+
+.hollow-compose-three-circles::after {
+    content: '';
+    height: 80px;
+    border: 1px dashed #fff;
+    position: absolute;
+    left: 60px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+.new{
+    padding-left: 90px;
+    padding-top: 10px;
+}
+.article-container {
+    display: -webkit-box;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.article-container-title {
+    display: -webkit-box;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    font-size: 20px;
+}
+.article-container-synopsis {
+
+text-align: left;
+}           
+a{
+    text-decoration:none;
+}
+a:hover {color:black;}  
+a:visited {color: black;} 
+a:link {color:black;}  
+a {color:black;}
+.warpper{
+    padding-bottom: 10px;
+}
+.text-oneLine{
+    display:block;            /*内联对象需加*/
+    word-break:keep-all;      /* 不换行 */
+    white-space:nowrap;       /* 不换行 */
+    overflow:hidden;          /* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;   /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+.body-div{
+    text-align:center;
+    /* background-color: red; */
+    width: 50%;
+    margin-left: 25%;
+    font-size: 12px;
+}
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    margin-left: 25%;
+}
+
+ul.pagination li {display: inline;}
+
+ul.pagination li a {
+    color: #f9f9f9;;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+p.serif{font-family:"Times New Roman",Times,serif;}
+body{
+    background-color: #363434;
+}

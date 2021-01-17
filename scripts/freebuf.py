@@ -24,6 +24,7 @@ class Spider(Base):
         self.base_url = "https://www.freebuf.com"
         self.get_url_frist_title()
         self.get_last_info()
+        self.new_type = 0
 
     def get_url_frist_title(self):
         response = requests.get(self.url).content

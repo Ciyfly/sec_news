@@ -1,5 +1,6 @@
 {%macro my_paginate(pagination,url)%}
 <nav>
+    <p>{{url}}</p>
     <ul class="pagination">
  
         {%if pagination.has_prev%}

@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-09 23:09:34
 LastEditors: Recar
-LastEditTime: 2021-01-16 10:59:06
+LastEditTime: 2021-01-17 23:42:02
 '''
 
 from .models import News
@@ -82,7 +82,9 @@ class Base():
                 add_news.append(News(
                     title=title,synopsis=synopsis,
                     script_name=self.script_name,
-                    source=self.source, href=href, source_url=self.source_url))
+                    source=self.source, href=href,
+                    source_url=self.source_url,
+                    new_type=self.new_type))
         except Exception:
             self.logger.error(traceback.format_exc())
         try:
@@ -114,7 +116,9 @@ class Base():
                     add_news.append(News(
                         title=title,synopsis=synopsis,
                         script_name=self.script_name,
-                        source=self.source, href=href, source_url=self.source_url))
+                        source=self.source, href=href, 
+                        source_url=self.source_url,
+                        new_type=self.new_type))
                     if test:
                         # test模式只添加第一个数据
                         break
