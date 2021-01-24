@@ -4,11 +4,12 @@
 Author: Recar
 Date: 2021-01-10 14:07:38
 LastEditors: Recar
-LastEditTime: 2021-01-13 00:03:21
+LastEditTime: 2021-01-24 09:55:24
 '''
-from main import Resvars, SpiderSec
+from resv import Resvars
+from spider import SpiderSec
 from scripts.models import Base_model
-from scripts.models import News
+from scripts.models import News, Company, Domain
 from scripts.gitlab_advisories import Spider as gitlab_advisorie_spider
 from scripts.aliyun_xz import Spider as aliyun_xz_spider
 from scripts.freebuf import Spider as freebuf_spider
@@ -37,6 +38,21 @@ class Manager(Resvars):
     def get_first_freebuf(self):
         freebuf_spider(self).update_new(test=True)
 
+    def insert_compamy(self, name, domain, icon_url):
+        Company.add(name, domain, icon_url, self.DBSession)
+
+    def get_compamy_all(self):
+        company_list = Company.get_all(self.DBSession)
+        return company_list
+
+    def test_insert_domain(self,domain, ips, company_id):
+        Domain.add(domain, ips, company_id, self.DBSession)
+
+    def get_domain_all(self):
+        return Domain.get_all(self.DBSession)
+
+    def get_domain_byname(self, name):
+        return Company.get_domains_byname(self.DBSession, name)
 
 manager = Manager()
 
@@ -78,6 +94,40 @@ def test_run():
     SpiderSec(manager).run()
     click.echo('test_run')
 
+@click.command()
+@click.option("--name", required=True)
+@click.option("--domain", required=True)
+@click.option("--icon_url", required=True)
+def insert_compamy(name, domain, icon_url):
+    manager.insert_compamy(name, domain, icon_url)
+    click.echo('insert Company')
+
+@click.command()
+def get_compamy_all():
+    company_list = manager.get_compamy_all()
+    click.echo(str(company_list))
+
+@click.command()
+@click.option("--domain", required=True)
+@click.option("--ips", required=True)
+@click.option("--company_id", required=True)
+def test_insert_domain(domain, ips, company_id):
+    manager.test_insert_domain(domain, ips, company_id)
+    click.echo('insert domain')
+
+@click.command()
+def get_domain_all():
+    domain_list = manager.get_domain_all()
+    click.echo(str(domain_list))
+
+
+@click.command()
+@click.option("--name", required=True)
+def get_domain_byname(name):
+    domains = manager.get_domain_byname(name)
+    domains = [str(domain) for domain in domains]
+    click.echo(str(domains))
+
 cli.add_command(initdb)
 cli.add_command(dropdb)
 cli.add_command(test)
@@ -85,6 +135,11 @@ cli.add_command(test_gitlab_advisories)
 cli.add_command(test_aliyun_xz)
 cli.add_command(test_freebuf)
 cli.add_command(test_run)
+cli.add_command(insert_compamy)
+cli.add_command(get_compamy_all)
+cli.add_command(test_insert_domain)
+cli.add_command(get_domain_all)
+cli.add_command(get_domain_byname)
 
 if __name__ == "__main__":
     cli()

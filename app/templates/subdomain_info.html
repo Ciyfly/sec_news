@@ -1,0 +1,52 @@
+
+
+<!--
+ * @Author: Recar
+ * @Date: 2021-01-10 23:05:39
+ * @LastEditors: Recar
+ * @LastEditTime: 2021-01-24 15:51:03
+-->
+
+
+<html>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cikonss.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <body>
+        <p></p>
+        <ul class="nav nav-tabs">
+            <li ><a href="/" >安全文章</a></li>
+            <li><a href="/loophole">漏洞预警</a></li>
+            <li class="active"><a href="/subdomain">子域名监控</a></li>
+        </ul>
+        <table class="table">
+            <caption style="color: white;padding-left: 10px;">{{domains[0].company.domain_name}}&nbsp; &nbsp; count: {{domains[0].company.subdomain_domains.__len__()}}</caption>
+           <thead>
+              <tr>
+                 <th>域名</th>
+                 <th>ip列表</th>
+                 <th>更新时间</th>
+              </tr>
+           </thead>
+           <tbody>
+            {% for domain in domains %}
+              <tr>
+                 <td>{{domain.domain}}</td>
+                 <td>{{domain.ips}}</td>
+                 <td>{{domain.update_time}}</td>
+              </tr>
+              {% endfor %}
+           </tbody>
+        </table>
+        </body>
+        <style>
+            table{
+                color: white;
+            }
+        </style>
+        <script type="text/javascript">
+
+    </script>
+</html>
