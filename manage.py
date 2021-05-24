@@ -3,14 +3,15 @@
 '''
 Author: Recar
 Date: 2021-01-10 14:07:38
-LastEditors: Recar
-LastEditTime: 2021-01-24 09:55:24
+LastEditors: recar
+LastEditTime: 2021-05-24 18:02:39
 '''
 from resv import Resvars
 from spider import SpiderSec
 from scripts.models import Base_model
 from scripts.models import News, Company, Domain
 from scripts.gitlab_advisories import Spider as gitlab_advisorie_spider
+from scripts.cve import Spider as cve_spider
 from scripts.aliyun_xz import Spider as aliyun_xz_spider
 from scripts.freebuf import Spider as freebuf_spider
 from log import logger
@@ -31,6 +32,10 @@ class Manager(Resvars):
 
     def get_first_gitlab_advisories(self):
         gitlab_advisorie_spider(self).update_new(test=True)
+
+    def get_first_cve_spider(self):
+        cve_spider(self).update_new(test=True)
+
 
     def get_first_aliyun_xz(self):
         aliyun_xz_spider(self).update_new(test=True)
@@ -78,6 +83,11 @@ def test():
 def test_gitlab_advisories():
     manager.get_first_gitlab_advisories()
     click.echo('test_gitlab_advisories')
+
+@click.command()
+def test_cve_spider():
+    manager.get_first_cve_spider()
+    click.echo('get_first_cve_spider')
 
 @click.command()
 def test_aliyun_xz():
@@ -132,6 +142,7 @@ cli.add_command(initdb)
 cli.add_command(dropdb)
 cli.add_command(test)
 cli.add_command(test_gitlab_advisories)
+cli.add_command(test_cve_spider)
 cli.add_command(test_aliyun_xz)
 cli.add_command(test_freebuf)
 cli.add_command(test_run)

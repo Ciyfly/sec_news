@@ -4,7 +4,7 @@
  * @Author: Recar
  * @Date: 2021-01-10 23:05:39
  * @LastEditors: recar
- * @LastEditTime: 2021-05-24 16:28:44
+ * @LastEditTime: 2021-05-24 18:16:34
 -->
 
 
@@ -28,14 +28,15 @@
             <h4 class="list-group-item-heading" >
                     <a href="{{new.href}}" target="_blank" style="color:#337ab7;" >{{new.title}}</a>
                     <span class="label label-info">{{new.source}}</span>
+                    {% if (current_time-new.update_time).seconds<3600 %}
+                    <span class="label label-default" >新</span>
+                    {% endif %}
                     {% if new.synopsis|length<8 %}
                     <span class="label label-default">{{new.synopsis}}</span>
                     {% else %}
                     <pre style="margin-top: 5px;">{{new.synopsis}}</pre>
                     {% endif %}
-                    {% if (current_time-new.update_time).seconds<3600 %}
-                    <span class="label label-default" >新</span>
-                    {% endif %}
+
                     <p class="list-group-item-text">
                         {{new.update_time.strftime('%Y-%m-%d %H:%M:%S')}}
                     </p>
