@@ -3,8 +3,8 @@
 '''
 Author: Recar
 Date: 2021-01-09 23:09:34
-LastEditors: recar
-LastEditTime: 2021-05-24 18:27:50
+LastEditors: Recar
+LastEditTime: 2021-05-24 20:49:51
 '''
 
 from .models import News
@@ -31,7 +31,12 @@ class Base():
         self.last_news = self.resv.DBSession.query(News).filter_by(script_name=self.script_name).order_by(News.update_time.desc()).first()
 
     def get_url_frist_title(self, xpath):
-        html = requests.get(self.url).content
+        html = ""
+        try:
+            html = requests.get(self.url).content
+        except:
+            self.logger.error("{0} requets error ".format(self.script_name))
+            return 
         r=etree.HTML(html)
         url_frist_title=r.xpath(xpath)
         if not url_frist_title:
@@ -57,8 +62,13 @@ class Base():
         self, title_xpath, href_xpath, synopsis_xpath,
         max_size=20, frist_size=1, init_size=1, test=False ):
         add_news = list()
+        html = ""
         try:
-            html = requests.get(self.url, headers=self.headers).content
+            try:
+                html = requests.get(self.url, headers=self.headers).content
+            except:
+                self.logger.error("{0} requets error ".format(self.script_name))
+                return 
             r=etree.HTML(html)
             if not test:
                 range_size = max_size
@@ -105,7 +115,11 @@ class Base():
         max_size=20, frist_size=1, init_size=1, test=False ):
         add_news = list()
         try:
-            html = requests.get(self.url, headers=self.headers).content
+            try:
+                html = requests.get(self.url, headers=self.headers).content
+            except:
+                self.logger.error("{0} requets error ".format(self.script_name))
+                return 
             r=etree.HTML(html)
             if not test:
                 range_size = max_size
