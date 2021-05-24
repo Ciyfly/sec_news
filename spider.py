@@ -3,7 +3,7 @@
 '''
 Date: 2021-01-07 11:33:40
 LastEditors: Recar
-LastEditTime: 2021-05-24 22:10:53
+LastEditTime: 2021-05-24 22:16:17
 '''
 from resv import Resvars
 from log import logger
@@ -66,4 +66,4 @@ if __name__ == '__main__':
     schedule.every(resv.spider_time).seconds.do(run)
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(300)
