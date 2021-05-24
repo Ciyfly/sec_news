@@ -3,7 +3,7 @@
 '''
 Date: 2021-01-07 11:33:40
 LastEditors: Recar
-LastEditTime: 2021-01-23 23:09:41
+LastEditTime: 2021-05-24 22:10:53
 '''
 from resv import Resvars
 from log import logger
@@ -14,6 +14,14 @@ import json
 import time
 import sys
 import os
+import signal
+
+def ctrl_c(signum,frame):
+    print()
+    print("input ctrl c")
+    sys.exit()
+signal.signal(signal.SIGINT, ctrl_c)
+
 
 class SpiderSec():
     def __init__(self, resv):

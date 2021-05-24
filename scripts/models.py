@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-09 22:58:52
 LastEditors: Recar
-LastEditTime: 2021-01-24 09:54:49
+LastEditTime: 2021-05-24 21:26:57
 '''
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column
@@ -23,6 +23,7 @@ class News(Base_model):
      update_time = Column(DateTime, default=datetime.now())
      source = Column(String(255))
      source_url = Column(String(255))
+     cover_url = Column(String(255))
      href = Column(String(255))
      script_name = Column(String(255))
      synopsis = Column(String(255))

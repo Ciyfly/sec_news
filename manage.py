@@ -3,8 +3,8 @@
 '''
 Author: Recar
 Date: 2021-01-10 14:07:38
-LastEditors: recar
-LastEditTime: 2021-05-24 18:02:39
+LastEditors: Recar
+LastEditTime: 2021-05-24 21:17:07
 '''
 from resv import Resvars
 from spider import SpiderSec
@@ -14,6 +14,7 @@ from scripts.gitlab_advisories import Spider as gitlab_advisorie_spider
 from scripts.cve import Spider as cve_spider
 from scripts.aliyun_xz import Spider as aliyun_xz_spider
 from scripts.freebuf import Spider as freebuf_spider
+from scripts.anquanke import Spider as anquanke_spider
 from log import logger
 from lxml import etree
 import traceback
@@ -42,6 +43,9 @@ class Manager(Resvars):
 
     def get_first_freebuf(self):
         freebuf_spider(self).update_new(test=True)
+
+    def get_first_anquanke(self):
+        anquanke_spider(self).update_new(test=True)
 
     def insert_compamy(self, name, domain, icon_url):
         Company.add(name, domain, icon_url, self.DBSession)
@@ -99,6 +103,12 @@ def test_freebuf():
     manager.get_first_freebuf()
     click.echo('test_freebuf')
 
+
+@click.command()
+def test_anquanke():
+    manager.get_first_anquanke()
+    click.echo('test_anquanke')
+
 @click.command()
 def test_run():
     SpiderSec(manager).run()
@@ -145,6 +155,7 @@ cli.add_command(test_gitlab_advisories)
 cli.add_command(test_cve_spider)
 cli.add_command(test_aliyun_xz)
 cli.add_command(test_freebuf)
+cli.add_command(test_anquanke)
 cli.add_command(test_run)
 cli.add_command(insert_compamy)
 cli.add_command(get_compamy_all)

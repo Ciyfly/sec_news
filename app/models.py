@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-10 23:05:09
 LastEditors: Recar
-LastEditTime: 2021-01-24 14:50:30
+LastEditTime: 2021-05-24 21:15:31
 '''
 from app import db
 from datetime import datetime
@@ -15,6 +15,7 @@ class News(db.Model):
      create_time = db.Column(db.DateTime, default=datetime.now)
      update_time = db.Column(db.DateTime, default=datetime.now)
      source = db.Column(db.String(255))
+     cover_url = db.Column(db.String(255))
      source_url = db.Column(db.String(255))
      href = db.Column(db.String(255))
      script_name = db.Column(db.String(255))

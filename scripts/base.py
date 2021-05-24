@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-09 23:09:34
 LastEditors: Recar
-LastEditTime: 2021-05-24 20:49:51
+LastEditTime: 2021-05-24 22:12:54
 '''
 
 from .models import News
@@ -20,10 +20,6 @@ class Base():
         self.logger = self.resv.logger
         self.headers = {
         'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
-        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language':'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
-        'Accept-Encoding':'gzip, deflate',
-        'Upgrade-Insecure-Requests':'1',
     }
         
 
@@ -116,7 +112,7 @@ class Base():
         add_news = list()
         try:
             try:
-                html = requests.get(self.url, headers=self.headers).content
+                html = requests.get(self.url, headers=self.headers, timeout=3).content
             except:
                 self.logger.error("{0} requets error ".format(self.script_name))
                 return 
@@ -127,19 +123,23 @@ class Base():
                 range_size = frist_size
             for i in range(init_size, range_size):
                 title=r.xpath(title_xpath.format(i))[0] if r.xpath(title_xpath.format(i)) else None
+                if title is None:
+                    continue
                 href=r.xpath(href_xpath.format(i))[0] if r.xpath(href_xpath.format(i)) else None
                 synopsis = ""
                 if href:
-                    info_html = requests.get(href, headers=self.headers).content
-                    r_info=etree.HTML(info_html)
-                    synopsis=r_info.xpath(synopsis_xpath) if r_info.xpath(synopsis_xpath) else None
-                    with open("1.txt", "w") as f:
-                        f.write(str(info_html))
+                    try:
+                        info_html = requests.get(href, headers=self.headers, timeout=3).content
+                    except:
+                        self.logger.error("{0} requets error ".format(self.script_name))
+                        return
+                    r_info=etree.HTML(str(info_html))
+                    synopsis=r_info.xpath('//*[@id="GeneratedTable"]/table//text()')[22]
+                    title=r_info.xpath('//*[@id="GeneratedTable"]/table//text()')[7]
                 if title:
                     title = title.replace("\n", "").replace("\t", "").strip()
                 if href:
                     href = href.replace("\n", "").replace("\t", "").strip()
-                    href = "{0}/{1}".format(self.base_url, href)
                 if synopsis:
                     synopsis = synopsis.replace("\n", "").replace("\t", "").strip()
                 self.logger.debug("{0} find: {1}".format(self.script_name, title))
@@ -170,36 +170,36 @@ class Base():
     def update_json(self, test=False):
         try:
             add_news = list()
-            response = requests.get(self.url).content
-            if response:
-                datas = json.loads(response).get("data").get("list")
-                for data in datas:
-                    title = data.get("post_title")
-                    synopsis = data.get("content")
-                    href = "".join([self.base_url, data.get("url")])
-                    if self.last_news:
-                        if title == self.last_news.title and not test:
-                            self.logger.info("{0} add {1}".format(self.script_name, len(add_news)))
-                            break
-                    self.logger.info("{0} find: {1}".format(self.script_name, title))
-                    self.logger.info("{0} find: {1}".format(self.script_name, href))
-                    self.logger.info("{0} find: {1}".format(self.script_name, synopsis))
-                    add_news.append(News(
-                        title=title,synopsis=synopsis,
-                        script_name=self.script_name,
-                        source=self.source, href=href, 
-                        source_url=self.source_url,
-                        new_type=self.new_type))
-                    if test:
-                        # test模式只添加第一个数据
-                        break
+            result = list()
+            try:
+                response = requests.get(self.url).content
+            except:
+                self.logger.error("{0} requets error ".format(self.script_name))
+                return 
+            add_news = self.parse(response, test=test)
+            for new in add_news:
+                title = new.get("title")
+                href =new.get("href", "")
+                synopsis = new.get("synopsis", "")
+                cover_url = new.get("cover_url", "")
+                self.logger.info("{0} find: {1}".format(self.script_name, title))
+                self.logger.info("{0} find: {1}".format(self.script_name, href))
+                self.logger.info("{0} find: {1}".format(self.script_name, synopsis))
+                self.logger.info("{0} find: {1}".format(self.script_name, cover_url))
+                result.append(News(
+                    title=title,synopsis=synopsis,
+                    script_name=self.script_name,
+                    source=self.source, href=href, 
+                    source_url=self.source_url,
+                    new_type=self.new_type, cover_url=cover_url))
         except Exception:
             self.logger.error(traceback.format_exc())
         try:
-            self.logger.info("{0} add {1}".format(self.script_name, len(add_news)))
-            for new in add_news:
+            self.logger.info("{0} add {1}".format(self.script_name, len(result)))
+            for new in result:
                 self.DBSession.add(new)
                 
             self.DBSession.commit()
         except Exception:
             self.logger.error(traceback.format_exc())
+
