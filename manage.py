@@ -3,8 +3,8 @@
 '''
 Author: Recar
 Date: 2021-01-10 14:07:38
-LastEditors: Recar
-LastEditTime: 2021-05-24 21:17:07
+LastEditors: recar
+LastEditTime: 2021-05-26 14:57:41
 '''
 from resv import Resvars
 from spider import SpiderSec
@@ -32,20 +32,20 @@ class Manager(Resvars):
         Base_model.metadata.drop_all(self.engine)
 
     def get_first_gitlab_advisories(self):
-        gitlab_advisorie_spider(self).update_new(test=True)
+        gitlab_advisorie_spider(self).update(test=True)
 
     def get_first_cve_spider(self):
-        cve_spider(self).update_new(test=True)
+        cve_spider(self).update(test=True)
 
 
     def get_first_aliyun_xz(self):
-        aliyun_xz_spider(self).update_new(test=True)
+        aliyun_xz_spider(self).update(test=True)
 
     def get_first_freebuf(self):
-        freebuf_spider(self).update_new(test=True)
+        freebuf_spider(self).update(test=True)
 
     def get_first_anquanke(self):
-        anquanke_spider(self).update_new(test=True)
+        anquanke_spider(self).update(test=True)
 
     def insert_compamy(self, name, domain, icon_url):
         Company.add(name, domain, icon_url, self.DBSession)
@@ -72,12 +72,12 @@ def cli():
 @click.command()
 def initdb():
     manager.init_db()
-    click.echo('init db')
+    click.echo('init db success')
 
 @click.command()
 def dropdb():
     manager.dropdb()
-    click.echo('drop db')
+    click.echo('drop db success')
 
 @click.command()
 def test():

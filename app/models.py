@@ -3,8 +3,8 @@
 '''
 Author: Recar
 Date: 2021-01-10 23:05:09
-LastEditors: Recar
-LastEditTime: 2021-05-24 21:15:31
+LastEditors: recar
+LastEditTime: 2021-05-26 15:31:45
 '''
 from app import db
 from datetime import datetime
@@ -21,6 +21,7 @@ class News(db.Model):
      script_name = db.Column(db.String(255))
      synopsis = db.Column(db.String(255))
      new_type =  db.Column(db.Integer, default=0)
+     hash_code = db.Column(db.String(255))
 
 class Company(db.Model):
      __tablename__ = 'company'

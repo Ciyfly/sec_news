@@ -3,8 +3,8 @@
 '''
 Author: Recar
 Date: 2021-01-09 22:58:52
-LastEditors: Recar
-LastEditTime: 2021-05-24 21:26:57
+LastEditors: recar
+LastEditTime: 2021-05-25 15:51:05
 '''
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column
@@ -28,6 +28,7 @@ class News(Base_model):
      script_name = Column(String(255))
      synopsis = Column(String(255))
      new_type =  Column(Integer, default=0)
+     hash_code =  Column(String(255))
 
 class Company(Base_model):
      __tablename__ = 'company'

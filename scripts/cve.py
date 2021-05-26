@@ -3,13 +3,11 @@
 '''
 Date: 2021-05-24 16:37:17
 LastEditors: recar
-LastEditTime: 2021-05-24 18:08:36
+LastEditTime: 2021-05-26 15:52:03
 '''
-from scripts.models import News
 from scripts.base import Base
 from lxml import etree
 import traceback
-import requests
 
 
 class Spider(Base):
@@ -20,25 +18,54 @@ class Spider(Base):
         self.source_url = "https://cassandra.cerias.purdue.edu/CVE_changes/today.html"
         self.url = "https://cassandra.cerias.purdue.edu/CVE_changes/today.html"
         self.base_url = "https://cve.mitre.org/"
-        self.get_last_info()
-        self.get_url_frist_title('/html/body/a[1]/text()')
         self.title_xpath = '/html/body/a[{0}]/text()'
         self.href_xpath = '/html/body/a[{0}]/@href'
         self.synopsis_xpath = '//*[@id="GeneratedTable"]/table/tbody/tr[4]/td/text()'
         self.new_type = 1
 
-    def update_new(self, test=False):
-        
+    def parse(self, response, test=False):
+        result = list()
+        if not response:
+            return result
         max_size = 50
         frist_size = 2
         init_size = 1
-        self.update_cve(
-            self.title_xpath, self.href_xpath, self.synopsis_xpath,
-            max_size, frist_size, init_size, test=test)
-      
-    def run(self):
-        if self.need_update():
-            self.logger.info("update CVE")
-            self.update_new()
+        r=etree.HTML(response)
+        if not test:
+            range_size = max_size
         else:
-            self.logger.info("== CVE")
+            range_size = frist_size
+        for i in range(init_size, range_size):
+            title=r.xpath(self.title_xpath.format(i))[0] if r.xpath(self.title_xpath.format(i)) else None
+            href=r.xpath(self.href_xpath.format(i))[0] if r.xpath(self.href_xpath.format(i)) else None
+            hash_code = self.get_hash_code(title)
+            if self.is_repeat(hash_code):
+                continue
+            synopsis = ""
+            if href:
+                info_html = self.get_response_text(url=href)
+                if info_html:
+                    r_info=etree.HTML(info_html)
+                    synopsis=r_info.xpath('//*[@id="GeneratedTable"]/table//text()')[22]
+                    title=r_info.xpath('//*[@id="GeneratedTable"]/table//text()')[7]
+            if title:
+                title = title.replace("\n", "").replace("\t", "").strip()
+                if "CVE" not in title:
+                    title = "CVE-"+title
+            if href:
+                href = href.replace("\n", "").replace("\t", "").strip()
+                href = "{0}/{1}".format(self.base_url, href)
+            if synopsis:
+                synopsis = synopsis.replace("\n", "").replace("\t", "").strip()
+            result.append(
+                {
+                    "title": title,
+                    "href": href,
+                    "synopsis": synopsis,
+                }
+            )
+        return result
+
+    def run(self):
+        self.logger.info("update CVE")
+        self.update()

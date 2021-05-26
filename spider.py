@@ -2,8 +2,8 @@
 # coding=utf-8
 '''
 Date: 2021-01-07 11:33:40
-LastEditors: Recar
-LastEditTime: 2021-05-24 22:16:17
+LastEditors: recar
+LastEditTime: 2021-05-26 15:31:00
 '''
 from resv import Resvars
 from log import logger
@@ -63,7 +63,6 @@ def run():
 
 if __name__ == '__main__':
     resv = Resvars()
-    schedule.every(resv.spider_time).seconds.do(run)
     while True:
-        schedule.run_pending()
+        run()
         time.sleep(300)
