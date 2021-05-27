@@ -3,8 +3,8 @@
 '''
 Author: Recar
 Date: 2021-01-18 23:58:47
-LastEditors: Recar
-LastEditTime: 2021-01-24 13:36:59
+LastEditors: recar
+LastEditTime: 2021-05-27 18:11:00
 '''
 
 from sqlalchemy import create_engine
@@ -21,11 +21,12 @@ class Resvars():
         # config
         config_path = os.path.join(self.base_path, "config", "config.ini") # noqa E501
         self.conf = configparser.ConfigParser()
-        self.conf.read(config_path)
+        self.conf.read(config_path, encoding="utf-8-sig")
         self.logger = logger
         self.model = self.conf.get('others', "model")
         self.spider_time = int(self.conf.get('others', 'spider_time'))
         self.subdomain_time = int(self.conf.get('others', 'subdomain_time'))
+        self.tag_list = eval(self.conf.get('filter', "tag_list"))
         if self.model == "debug":
             self.model = False
         else:

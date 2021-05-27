@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-10 15:34:13
 LastEditors: recar
-LastEditTime: 2021-05-26 14:40:15
+LastEditTime: 2021-05-27 17:09:40
 '''
 
 from scripts.base import Base
@@ -19,7 +19,7 @@ class Spider(Base):
         self.base_url = "https://xz.aliyun.com/"
         self.title_xpath = '//*[@id="includeList"]/table/tr[{0}]/td/p[1]/a/text()'
         self.href_xpath = '//*[@id="includeList"]/table/tr[{0}]/td/p[1]/a/@href'
-        self.synopsis_xpath = '//*[@id="includeList"]/table/tr[{0}]/td/p[2]/a[2]/text()'
+        self.tag_xpath = '//*[@id="includeList"]/table/tr[{0}]/td/p[2]/a[2]/text()'
         self.new_type = 0
 
     def parse(self, response, test=False):

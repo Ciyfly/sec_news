@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-09 23:09:34
 LastEditors: recar
-LastEditTime: 2021-05-26 15:46:41
+LastEditTime: 2021-05-27 18:02:53
 '''
 
 from re import I
@@ -22,11 +22,21 @@ class Base():
         self.resv = resv
         self.DBSession = self.resv.DBSession
         self.logger = self.resv.logger
+        self.title_xpath = None
+        self.href_xpath = None
+        self.synopsis_xpath = None
+        self.tag_xpath = None
         self.timeout = 3
         self.headers = {
         'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
-    }
-        
+        }
+
+    # def get_type_tag(self, title, synopsis):
+    #     type_tags = list()
+    #     for tag in self.tag_list:
+    #         if tag in title or tag in synopsis:
+    #             type_tags.append(tag)
+    #     return ",".join(type_tags)
 
     def get_response_text(self, url=None, headers=None, timeout=None):
         if url is None:
@@ -69,9 +79,20 @@ class Base():
         else:
             range_size = frist_size
         for i in range(init_size, range_size):
-            title=r.xpath(self.title_xpath.format(i))[0] if r.xpath(self.title_xpath.format(i)) else None
-            href=r.xpath(self.href_xpath.format(i))[0] if r.xpath(self.href_xpath.format(i)) else None
-            synopsis=r.xpath(self.synopsis_xpath.format(i))[0] if r.xpath(self.synopsis_xpath.format(i)) else None
+            title = ""
+            href = ""
+            synopsis = ""
+            tag = ""
+            if self.title_xpath:
+                title=r.xpath(self.title_xpath.format(i))[0] if r.xpath(self.title_xpath.format(i)) else None
+            if self.href_xpath:
+                href=r.xpath(self.href_xpath.format(i))[0] if r.xpath(self.href_xpath.format(i)) else None
+            if self.synopsis_xpath:
+                synopsis=r.xpath(self.synopsis_xpath.format(i))[0] if r.xpath(self.synopsis_xpath.format(i)) else None
+            if self.tag_xpath:
+                tag=r.xpath(self.tag_xpath.format(i))[0] if r.xpath(self.tag_xpath.format(i)) else None
+            if not title:
+                continue
             if title:
                 title = title.replace("\n", "").replace("\t", "").strip()
             if href:
@@ -84,6 +105,7 @@ class Base():
                     "title": title,
                     "href": href,
                     "synopsis": synopsis,
+                    "tag": tag
                 }
             )
         return result
@@ -109,14 +131,16 @@ class Base():
                 href =new.get("href", "")
                 synopsis = new.get("synopsis", "")
                 cover_url = new.get("cover_url", "")
+                tag = new.get("tag", "")
                 hash_code = self.get_hash_code(title)
                 if self.is_repeat(hash_code):
                     self.logger.debug("repeat: {0}".format(title))
                     continue
-                self.logger.info("{0} find: {1}".format(self.script_name, title))
-                self.logger.info("{0} find: {1}".format(self.script_name, href))
-                self.logger.info("{0} find: {1}".format(self.script_name, synopsis))
-                self.logger.info("{0} find: {1}".format(self.script_name, cover_url))
+                self.logger.info("{0} find title: {1}".format(self.script_name, title))
+                self.logger.info("{0} find href: {1}".format(self.script_name, href))
+                self.logger.info("{0} find synopsis: {1}".format(self.script_name, synopsis))
+                self.logger.info("{0} find cover_url: {1}".format(self.script_name, cover_url))
+                self.logger.info("{0} find tag: {1}".format(self.script_name, tag))
                 result.append(News(
                     title=title,synopsis=synopsis,
                     script_name=self.script_name,
@@ -124,6 +148,7 @@ class Base():
                     source_url=self.source_url,
                     new_type=self.new_type,
                     cover_url=cover_url,
+                    tag=tag,
                     hash_code=hash_code))
                 if test:
                     break
