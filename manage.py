@@ -4,7 +4,7 @@
 Author: Recar
 Date: 2021-01-10 14:07:38
 LastEditors: recar
-LastEditTime: 2021-05-26 14:57:41
+LastEditTime: 2021-05-27 16:59:32
 '''
 from resv import Resvars
 from spider import SpiderSec
@@ -15,6 +15,7 @@ from scripts.cve import Spider as cve_spider
 from scripts.aliyun_xz import Spider as aliyun_xz_spider
 from scripts.freebuf import Spider as freebuf_spider
 from scripts.anquanke import Spider as anquanke_spider
+from scripts.paper import Spider as paper_spider
 from log import logger
 from lxml import etree
 import traceback
@@ -46,6 +47,10 @@ class Manager(Resvars):
 
     def get_first_anquanke(self):
         anquanke_spider(self).update(test=True)
+
+    def get_first_paper(self):
+        paper_spider(self).update(test=True)
+
 
     def insert_compamy(self, name, domain, icon_url):
         Company.add(name, domain, icon_url, self.DBSession)
@@ -80,6 +85,13 @@ def dropdb():
     click.echo('drop db success')
 
 @click.command()
+def restdb():
+    manager.dropdb()
+    manager.init_db()
+    click.echo('rest db success')
+
+
+@click.command()
 def test():
     click.echo('test')
 
@@ -108,6 +120,12 @@ def test_freebuf():
 def test_anquanke():
     manager.get_first_anquanke()
     click.echo('test_anquanke')
+
+@click.command()
+def test_paper():
+    manager.get_first_paper()
+    click.echo('test_paper')
+
 
 @click.command()
 def test_run():
@@ -140,7 +158,6 @@ def get_domain_all():
     domain_list = manager.get_domain_all()
     click.echo(str(domain_list))
 
-
 @click.command()
 @click.option("--name", required=True)
 def get_domain_byname(name):
@@ -148,15 +165,24 @@ def get_domain_byname(name):
     domains = [str(domain) for domain in domains]
     click.echo(str(domains))
 
+# db
 cli.add_command(initdb)
 cli.add_command(dropdb)
-cli.add_command(test)
+cli.add_command(restdb)
+
+# spider
 cli.add_command(test_gitlab_advisories)
 cli.add_command(test_cve_spider)
 cli.add_command(test_aliyun_xz)
 cli.add_command(test_freebuf)
 cli.add_command(test_anquanke)
+cli.add_command(test_paper)
+
+# run
+cli.add_command(test)
 cli.add_command(test_run)
+
+# subdomain
 cli.add_command(insert_compamy)
 cli.add_command(get_compamy_all)
 cli.add_command(test_insert_domain)
